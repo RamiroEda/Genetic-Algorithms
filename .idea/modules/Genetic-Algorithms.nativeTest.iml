@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output-test url="file://$MODULE_DIR$/../../build/classes/kotlin/native/test" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/nativeTest" />
+    <orderEntry type="jdk" jdkName="Kotlin SDK" jdkType="KotlinSDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - stdlib" level="project" />
+    <orderEntry type="module" module-name="Genetic-Algorithms.commonMain" scope="TEST" />
+    <orderEntry type="module" module-name="Genetic-Algorithms.commonTest" scope="TEST" production-on-test="" />
+    <orderEntry type="module" module-name="Genetic-Algorithms.nativeMain" scope="TEST" />
+    <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - builtin [mingw_x64]" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - gdiplus [mingw_x64]" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - iconv [mingw_x64]" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - opengl32 [mingw_x64]" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - posix [mingw_x64]" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - windows [mingw_x64]" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - zlib [mingw_x64]" level="project" />
+  </component>
+</module>
