@@ -10,9 +10,11 @@ class Genetic<T : Phenotype>(
     private val chromosomeLength : Int,
     private val phenotypeClass : KClass<T>,
     private val minValue : Int = 0,
-    private val maxValue : Int = 1
+    private val maxValue : Int = 1,
+    private val bestByLargestFitness : Boolean = true
 ) {
     val lastPopulation = ArrayList<T>()
+    private var onNewGenerationCallback : (Int, List<Phenotype>) -> Unit = {_,_->}
 
     init {
         assert(mutability in 0.0..1.0){
@@ -24,9 +26,17 @@ class Genetic<T : Phenotype>(
         generateInitialPopulation(fitnessLambda)
 
         for (generation in 1..generations){
-            lastPopulation.sortByDescending {
-                it.fitness
+            if(bestByLargestFitness){
+                lastPopulation.sortByDescending {
+                    it.fitness
+                }
+            }else{
+                lastPopulation.sortBy {
+                    it.fitness
+                }
             }
+
+            onNewGenerationCallback(generation, lastPopulation)
 
             val selectionPopulation = ArrayList<T>()
 
@@ -39,7 +49,7 @@ class Genetic<T : Phenotype>(
             }
 
 
-            val newGeneration = List<T>(population-selectionPopulation.size){
+            val newGeneration = List(population-selectionPopulation.size){
                 val mother = selectionPopulation.random()
                 val father = selectionPopulation.random()
 
@@ -50,11 +60,7 @@ class Genetic<T : Phenotype>(
                 if(canMutate()){
                     child.mutate {
                         val index = Random.nextInt(size)
-                        set(index, if(get(index) != 0){
-                            0
-                        }else{
-                            1
-                        })
+                        set(index, Random.nextInt(minValue, maxValue))
                     }
                 }
 
@@ -66,8 +72,14 @@ class Genetic<T : Phenotype>(
             replacePopulation(selectionPopulation + newGeneration)
         }
 
-        lastPopulation.sortByDescending {
-            it.fitness
+        if(bestByLargestFitness){
+            lastPopulation.sortByDescending {
+                it.fitness
+            }
+        }else{
+            lastPopulation.sortBy {
+                it.fitness
+            }
         }
     }
 
@@ -78,6 +90,10 @@ class Genetic<T : Phenotype>(
                Random.nextInt(minValue, maxValue)
             }, fitnessLambda)
         })
+    }
+
+    fun onNewGeneration(callback : (Int, List<Phenotype>) -> Unit){
+        this.onNewGenerationCallback = callback
     }
 
     private fun canMutate() = mutability > Random.nextDouble()

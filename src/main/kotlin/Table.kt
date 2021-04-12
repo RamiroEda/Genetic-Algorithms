@@ -8,18 +8,22 @@ class Table(
         val queens = List(chromosome.size){ i -> Pair(chromosome[i], i) }
         val stringBuilder = StringBuilder()
 
-        stringBuilder.appendLine("----------- Tablero ${fitness} ------------")
-        for (y in 0 until 8){
-            for (x in 0 until 8){
+        stringBuilder.appendLine("----------- Tablero $fitness ------------")
+        for (y in chromosome.indices){
+            for (x in chromosome.indices){
                 val queen = if(queens.firstOrNull{it.first == y && it.second == x} == null){
-                    " "
+                    if((y+x)%2 == 0){
+                        "░"
+                    }else{
+                        "█"
+                    }
                 }else{
                     "X"
                 }
                 stringBuilder.append(if((y+x)%2 == 0){
-                    "$queen⬜"
+                    "░$queen░"
                 }else{
-                    "$queen⬛"
+                    "█$queen█"
                 })
             }
             stringBuilder.appendLine()

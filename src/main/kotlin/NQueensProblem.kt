@@ -1,28 +1,24 @@
-fun main() {
-    nQueensProblem()
-//    print(countAttacks(listOf(
-//        Pair(7,1),
-//        Pair(6,2),
-//    )))
-}
-
-
-fun nQueensProblem(){
-    val tablero = Pair(8,8)
+fun nQueensProblem(onNewGenerationCallback : (Int, List<Phenotype>) -> Unit){
+    val tablero = Pair(125, 125)
     val area = tablero.first * tablero.second
 
-    val genetic = Genetic(1000, 0.20, 1000, tablero.second, Table::class, maxValue = tablero.first)
+    val genetic = Genetic(
+        10000,
+        0.30,
+        100,
+        tablero.second,
+        Table::class,
+        minValue = 0,
+        maxValue = tablero.first,
+        bestByLargestFitness = false
+    )
+
+    genetic.onNewGeneration(onNewGenerationCallback)
 
     genetic.start {
         val queens = List(it.size){ i -> Pair(it[i], i) }
 
-        val attacks = countAttacks(queens)
-
-        if(attacks == 0){
-            2.0 * area * queens.size
-        }else{
-            area/attacks.toDouble()
-        }
+        countAttacks(queens).toDouble()
     }
 
     genetic.lastPopulation.forEach {
