@@ -15,6 +15,11 @@ class Genetic<T : Phenotype>(
 ) {
     val lastPopulation = ArrayList<T>()
     private var onNewGenerationCallback : (Int, List<Phenotype>) -> Unit = {_,_->}
+    var mutationFunction : IntArray.() -> Unit = {
+        val index = Random.nextInt(size)
+        set(index, Random.nextInt(minValue, maxValue))
+    }
+    var onFinish : (List<Phenotype>) -> Unit = {}
 
     init {
         assert(mutability in 0.0..1.0){
@@ -36,7 +41,10 @@ class Genetic<T : Phenotype>(
                 }
             }
 
-            onNewGenerationCallback(generation, lastPopulation)
+            if(generation % 1 == 0 || generation == generations){
+                println(lastPopulation.first())
+                onNewGenerationCallback(generation, lastPopulation.toList())
+            }
 
             val selectionPopulation = ArrayList<T>()
 
@@ -58,10 +66,7 @@ class Genetic<T : Phenotype>(
                 val child = mother.cross(father, mask)
 
                 if(canMutate()){
-                    child.mutate {
-                        val index = Random.nextInt(size)
-                        set(index, Random.nextInt(minValue, maxValue))
-                    }
+                    child.mutate(mutationFunction)
                 }
 
                 phenotypeClass.constructors.first {
@@ -81,6 +86,8 @@ class Genetic<T : Phenotype>(
                 it.fitness
             }
         }
+
+        onFinish(lastPopulation)
     }
 
     private fun generateInitialPopulation(fitnessLambda: (IntArray) -> Double){

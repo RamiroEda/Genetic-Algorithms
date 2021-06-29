@@ -52,7 +52,7 @@ open class Phenotype(
     override fun toString() = """
         ---------------------------------------------
         phenotype       = ${chromosome.sum()}
-        genotype        = ${chromosome.joinToString("")}
+        genotype        = ${chromosome.joinToString(" ")}
         
         fitness         = $fitness
         ---------------------------------------------
